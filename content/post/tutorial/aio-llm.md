@@ -1,6 +1,6 @@
 ---
 date: "2024-10-17T19:32:15+08:00"
-draft: true
+draft: false
 title: "All In One 小白大模型科普"
 slug: "aio-llm"
 description: "帮助小白快速入门大模型相关概念和技术"

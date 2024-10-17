@@ -1,2 +1,3 @@
 # Orion-zhen.github.io
-My blog website | 我的博客网站
+
+My blog [website](https://orion-zhen.github.io/) | 我的博客[网站](https://orion-zhen.github.io/)

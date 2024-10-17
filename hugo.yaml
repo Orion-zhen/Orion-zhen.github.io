@@ -1,0 +1,190 @@
+baseURL: "https://orion-zhen.github.io/"
+languageCode: "zh-cn"
+title: "Orion"
+copyright: Orion-zhen
+theme: hugo-theme-stack
+frontmatter:
+  format: yaml
+
+# Theme i18n support
+# Available values: ar, bn, ca, de, el, en, es, fr, hu, id, it, ja, ko, nl, pt-br, th, uk, zh-cn, zh-hk, zh-tw
+DefaultContentLanguage: zh-cn
+# Set hasCJKLanguage to true if DefaultContentLanguage is in [zh-cn ja ko]
+# This will make .Summary and .WordCount behave correctly for CJK languages.
+hasCJKLanguage: true
+
+languages:
+  en:
+    languageName: English
+    title: "Orion"
+    weight: 1
+    params:
+      sidebar:
+        subtitle: 👋 Welcome to my website.
+  zh-cn:
+    languageName: 简体中文
+    title: "Orion"
+    weight: 2
+    params:
+      sidebar:
+        subtitle: 👋 欢迎来到我的网页.
+
+# articles per page
+pagination:
+  pagerSize: 5
+
+permalinks:
+  post: /article/:slug/
+  page: /:slug/
+
+params:
+  mainSections:
+    - post
+  featuredImageField: image
+  rssFullContent: true
+  favicon: /favicon.ico
+  # e.g.: favicon placed in `static/favicon.ico` of your site folder, then set this field to `/favicon.ico` (`/` is necessary)
+
+  footer:
+    since: 2024
+    customText:
+
+  dateFormat:
+    published: 2006-01-02
+    lastUpdated: 2006-01-02
+
+  sidebar:
+    # emoji: 🤗
+    subtitle: 欢迎来到我的网页.
+    avatar:
+      enabled: true
+      local: true
+      src: img/avatar.png
+
+  article:
+    math: true
+    toc: true
+    readingTime: false
+    wordCount: true
+    license:
+      enabled: true
+      default: GNU General Public License v3.0
+
+  comments:
+    enabled: true
+    provider: utterances
+
+    utterances:
+      repo: Orion-zhen/Orion-zhen.github.io
+      issueTerm: pathname
+      label: comment
+
+  widgets:
+    homepage:
+      - type: search
+      - type: archives
+        params:
+          limit: 5
+      - type: categories
+        params:
+          limit: 10
+      - type: tag-cloud
+        params:
+          limit: 10
+    page:
+      - type: toc
+
+  opengraph:
+    twitter:
+      # Your Twitter username
+      site:
+
+      # Available values: summary, summary_large_image
+      card: summary_large_image
+
+  defaultImage:
+    opengraph:
+      enabled: false
+      local: false
+      src:
+
+  colorScheme:
+    # Display toggle
+    toggle: true
+
+    # Available values: auto, light, dark
+    default: auto
+
+  imageProcessing:
+    cover:
+      enabled: true
+    content:
+      enabled: true
+
+### Custom menu
+### See https://stack.jimmycai.com/config/menu
+### To remove about, archive and search page menu item, remove `menu` field from their FrontMatter
+menu:
+  main: []
+
+  social:
+    - identifier: github
+      name: GitHub
+      url: https://github.com/Orion-zhen
+      params:
+        icon: brand-github
+
+    - identifier: huggingface
+      name: HuggingFace
+      url: https://huggingface.co/Orion-zhen
+      params:
+        icon: hf-logo
+
+    - identifier: ko-fi
+      name: Ko-fi
+      url: https://ko-fi.com/orionzhen
+      params:
+        icon: coffee
+
+related:
+  includeNewer: true
+  threshold: 60
+  toLower: false
+  indices:
+    - name: tags
+      weight: 100
+
+    - name: categories
+      weight: 200
+
+markup:
+  goldmark:
+    extensions:
+      passthrough:
+        enable: true
+        delimiters:
+          block:
+            - - \[
+              - \]
+            - - $$
+              - $$
+          inline:
+            - - \(
+              - \)
+            - - $
+              - $
+    renderer:
+      ## Set to true if you have HTML content inside Markdown
+      unsafe: true
+  tableOfContents:
+    endLevel: 4
+    ordered: true
+    startLevel: 2
+  highlight:
+    noClasses: false
+    codeFences: true
+    guessSyntax: true
+    lineNoStart: 1
+    lineNos: true
+    lineNumbersInTable: true
+    tabWidth: 4

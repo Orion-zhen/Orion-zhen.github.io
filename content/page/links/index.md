@@ -9,6 +9,9 @@ links:
     description: TypeScript is a typed superset of JavaScript that compiles to plain JavaScript.
     website: https://www.typescriptlang.org
     image: assets/ts-logo-128.jpg
+  - title: Lico Meta
+    description: Innovating at the nexus of tech and soul.  生如夏花
+    website: https://licometa.pages.dev
 menu:
     main: 
         weight: -50

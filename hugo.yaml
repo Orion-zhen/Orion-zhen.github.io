@@ -20,14 +20,14 @@ languages:
     weight: 1
     params:
       sidebar:
-        subtitle: 👋 Welcome to my website.
+        subtitle: sudo chmod -R 777 /world
   zh-cn:
     languageName: 简体中文
     title: "Orion"
     weight: 2
     params:
       sidebar:
-        subtitle: 👋 欢迎来到我的网页.
+        subtitle: sudo chmod -R 777 /world
 
 # articles per page
 pagination:
@@ -55,7 +55,7 @@ params:
 
   sidebar:
     # emoji: 🤗
-    subtitle: 欢迎来到我的网页.
+    subtitle: sudo chmod -R 777 /world
     avatar:
       enabled: true
       local: true
@@ -138,7 +138,7 @@ menu:
       name: HuggingFace
       url: https://huggingface.co/Orion-zhen
       params:
-        icon: hf-logo
+        icon: mood-spark
 
     - identifier: ko-fi
       name: Ko-fi

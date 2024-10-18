@@ -4,6 +4,7 @@
 /public
 /resources
 .hugo_build.lock
+hugo
 
 # Basic Jekyll gitignores (synchronize to Jekyll.gitignore)
 _site/

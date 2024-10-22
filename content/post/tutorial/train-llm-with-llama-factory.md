@@ -3,7 +3,7 @@ date: "2024-10-19T21:35:02+08:00"
 draft: false
 title: "使用 LLaMA-Factory 微调大语言模型"
 slug: "train-llm-with-llama-factory"
-description: "train-llm-with-llama-factory"
+description: 新手友好的训练方式
 image: /post/tutorial/train-llm-with-llama-factory-logo.png
 categories:
   - 教程

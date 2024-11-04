@@ -345,7 +345,7 @@ AWQ 量化是对 GPTQ 的优化, 在同样的量化精度下 AWQ 的模型性能
 - 你在用 Windows, 且不想用 WSL
 - 你不会/不想打开**命令行**输入哪怕一条**命令**, 只想用鼠标点击完成操作
 
-> 如果koboldcpp较为复杂的配置界面让你有些无所适从, 不妨尝试[LMStudio](https://discord.com/channels/1124998756715216976/1287390599804227584/1287391701438300210)
+> 如果koboldcpp较为复杂的配置界面让你有些无所适从, 不妨尝试[LMStudio](https://lmstudio.ai)
 
 首先前往[koboldcpp发布页面](https://github.com/LostRuins/koboldcpp/releases), 找到最新的版本, 然后按照如下条件选择你要下载的版本:
 

@@ -14,7 +14,7 @@ license: GNU General Public License v3.0
 
 这里有一个相关的系统架构图供参考:
 
-![系统架构图](/post/tutorial/aio-llm-sysarch.png)
+![系统架构图](/post/tutorial/aio-llm/system-arch.png)
 
 另附有常见问题速查, 见本文**最末尾**, 如果你是新手, 建议详细阅读本文后再看
 
@@ -415,16 +415,44 @@ AWQ 量化是对 GPTQ 的优化, 在同样的量化精度下 AWQ 的模型性能
 
 总的来说, LMStudio是相比koboldcpp和ollama更加新手友好的选择, 唯一让我不喜欢的地方是, 它是闭源的商业软件
 
-要使用 LMStudio, 首先前往[官方网站](https://lmstudio.ai/)下载安装包, 然后按照指示安装. 当安装完成后, 你应该能看到 LMStudio 的应用程序. 初始时是英文界面, 需要你切换到中文
+要使用 LMStudio, 首先前往[官方网站](https://lmstudio.ai/)下载安装包, 然后按照指示安装. 当安装完成后, 你应该能看到 LMStudio 的应用程序.
 
-然后, 在 LMStudio 左侧选项卡内找到开发者一栏, 点击后在顶部左侧找到 LM运行时 按钮, 点击进入后端配置. 在这个页面中, 观察页面左侧的栏目, 根据你使用的显卡选择软件包下载:
+> 本教程的软件截图来自 LMStudio 0.3.5 Linux 版, 和最新的软件界面可能有细微差别
+
+初始时是英文界面, 需要你切换到中文:
+
+![change-lang-1](/post/tutorial/aio-llm/lmstudio-change-lang-1.png)
+
+![change-lang-2](/post/tutorial/aio-llm/lmstudio-change-lang-2.png)
+
+然后, 在 LMStudio 左侧选项卡内找到开发者一栏:
+
+![get-runtime-1](/post/tutorial/aio-llm/lmstudio-get-runtime-1.png)
+
+点击后在顶部左侧找到 LM运行时 按钮, 点击进入后端配置.
+
+![get-runtime-2](/post/tutorial/aio-llm/lmstudio-get-runtime-2.png)
+
+在这个页面中, 观察页面左侧的栏目, 根据你使用的显卡选择软件包下载:
 
 - NVIDIA 显卡: 选择 CUDA llama.cpp (Windows)
 - AMD 显卡: 选择 ROCm llama.cpp (Windows)
 
 下载完运行时后, 在左侧选项卡内找到搜索一栏, 然后搜索你喜欢的模型进行下载. 注意这个过程需要你能流畅地访问**HF**
 
+![find-1](/post/tutorial/aio-llm/lmstudio-find-1.png)
+
+![find-2](/post/tutorial/aio-llm/lmstudio-find-2.png)
+
 当你下载完成后, 在左侧选项卡内找到聊天一栏, 然后载页面最上方找到 选择要加载的模型 按钮, 在出现的下拉选项卡中点击你下载的模型, 然后点击加载模型, 等待模型加载完成. 然后你就可以在 LMStudio 内和模型对话了
+
+![chat-1](/post/tutorial/aio-llm/lmstudio-chat-1.png)
+
+在你成功加载了模型**之后**, 你还可以启动 OpenAI 兼容的 **API**:
+
+![api-1](/post/tutorial/aio-llm/lmstudio-api-1.png)
+
+其中, 端口号 Server Port 可以任意选择, 例如图中保持的是默认的端口号 1234, 则 **API** 地址是 `http://127.0.0.1:1234` 注意开启 `启用 CORS` 和 `在局域网内提供服务` 选项以便进行更多的操作
 
 ### llama.cpp
 

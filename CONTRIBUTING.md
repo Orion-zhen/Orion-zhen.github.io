@@ -60,11 +60,9 @@ static/post/test/contribute/test-article/test-image-1.png
 
 1. 所有的标点符号都应该是英文标点
 2. 行内英文单词, 行内代码的两侧需要用空格包含, 但标点符号可以紧随. 示例:
-
-  - 正确: 这是一段 example code, 用来演示格式要求
-  - 正确: 这是一句带有括号(parentheses)的话
-  - 错误: 这是一段`wrong`示例
-
+   - 正确: 这是一段 example code, 用来演示格式要求
+   - 正确: 这是一句带有括号(parentheses)的话
+   - 错误: 这是一段`wrong`示例
 3. 文章格式要求请遵守 `markdownlint` 的规则
 4. 注意区分并正确填写文章的 **类型(categories)** 和 **标签(tag)**. 类型是根据文章的功能来决定的, 诸如教程, 笔记, 日志等; 标签则是根据文章的主题来确定的, 诸如大模型, 编程, 数学等
 

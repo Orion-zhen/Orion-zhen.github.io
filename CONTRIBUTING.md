@@ -28,16 +28,28 @@ content/post/test/contribute/test-article.md
 
 所有图片均应存放在 `static` 文件夹中, 并且遵循和引用该图片的文章一样的路径. 换言之, 将对应文章的路径中的 `content` 替换为 `static`, 即是这张图片的路径
 
-图片的文件名应该使用 `引用文章名-图片名` 的格式:
+对一篇文章中的单个图片, 文件名应该使用 `引用文章名-图片名` 的格式:
 
 ```shell
-static/post/类型/细分主题(可选)/文件名-图片名
+static/post/类型/细分主题(可选)/文章名-图片名
 ```
 
 以下是一个示例:
 
 ```shell
 static/post/test/contribute/test-article-test-image.png
+```
+
+如果一篇文章有多个图片, 文件名应该使用 `引用文章名/图片名` 的格式:
+
+```shell
+static/post/类型/细分主题(可选)/文章名/图片名
+```
+
+以下是一个示例:
+
+```shell
+static/post/test/contribute/test-article/test-image-1.png
 ```
 
 要在文章中引用图像, 只需要将图像路径中的 `static` 删除即可: `/post/类型/细分主题(可选)/文件名-图片名`. 注意, 最开头的 `/` 是必要的

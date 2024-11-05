@@ -354,11 +354,13 @@ AWQ 量化是对 GPTQ 的优化, 在同样的量化精度下 AWQ 的模型性能
 - Windows, 有 NVIDIA 显卡, 不知道自己的 cuda 版本: 下载 `koboldcpp.exe`
 - Windows, 有 AMD 显卡: 前往[koboldcpp-rocm发布页面](https://github.com/YellowRoseCx/koboldcpp-rocm/releases), 下载 `koboldcpp_rocm.exe`
 
-当你完成下载后, 双击打开对应的`.exe`文件. 如果有杀毒软件阻止你运行, 选择仍要运行. 在等待一段时间后, 你应该能看到 koboldcpp 的窗口和一个命令行窗口
+当你完成下载后, 双击打开对应的`.exe`文件. 如果有杀毒软件阻止你运行, 选择仍要运行. 在等待一段时间后, 你应该能看到 koboldcpp 的窗口和一个命令行窗口. 有若干值得关注的选项, 已经用红色方框标出:
+
+![koboldcpp-overview-1](/post/tutorial/aio-llm/koboldcpp-overview-1.png)
 
 此时 koboldcpp 窗口应该处在 **Quick Launch** 界面, 你在这个界面中进行配置即可方便地加载 GGUF 模型. 让我们一项一项来看:
 
-- Presets: 选择一套预设的加载方案. 如果你有 NVIDIA 显卡, 则在这个下拉式菜单中选择 **Use CuBLAS**; 如果你有 AMD 显卡, 则选择 **Use rocBLAS**; 如果你没有显卡, 则选择 **Use CPU**
+- Presets: 选择一套预设的加载方案. 如果你有 NVIDIA 显卡, 则在这个下拉式菜单中选择 **Use CuBLAS**; 如果你有 AMD 显卡, 则选择 **Use hipBLAS**; 如果你没有显卡, 则选择 **Use CPU**
 - GPU ID: 当你选择使用显卡加载时, 会出现这个选项. 选择你要使用的显卡的 ID (如1, 2, 3, 4, All). All 表示使用所有显卡. 当你正确地选择了显卡序号时, 旁边会有黄色的字表明你选择的显卡的型号
 - GPU Layers: 当你使用显卡加载时, 会出现这个选项. 选择你要放到显卡中的模型层数. 模型层数的含义和计算参考上文 认识量化->GGUF 中的相关知识
 - Use FlashAttention: 勾选这个选项时, 将启用 FlashAttention 功能, 它能提高模型的运行速度

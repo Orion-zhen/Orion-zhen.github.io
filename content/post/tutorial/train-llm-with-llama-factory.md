@@ -320,7 +320,7 @@ ShareGPT 格式的偏好数据集同样需要在 `chosen` 列中提供更优的�
 复制一份 `examples/train_lora/llama3_lora_sft.yaml` 然后重命名成你自己的配置文件, 例如我将其重命名为 `examples/train_lora/qwen2_lora_sft.yaml`. 然后开始更改相关配置:
 
 - model_name_or_path: 你之前下载的**原始模型**的路径. 请填写绝对路径
-- lora_rank: LoRA 的秩, 为 2 的幂. 一般取 8. 秩越大, 需要的显存越多. 根据[这篇论文](https://arxiv.org/abs/2106.09685), LoRA 的性能在 32 秩时达到最佳, 64 秩时开始下滑. 但是也有人说, LoRA rank 越大, 越趋近于全量微调
+- lora_rank: LoRA 的秩, 为 2 的幂. 一般取 8. 秩越大, 需要的显存越多. 根据[这篇论文](https://arxiv.org/abs/2106.09685), LoRA 的性能在 32 秩时达到最佳, 64 秩时开始下滑. 但是根据[这篇论文](https://arxiv.org/abs/2405.09673), LoRA rank 越大, 越趋近于全量微调, LoRA rank 是用来调节学习程度和遗忘程度的变量
 - dataset: 你需要使用的数据集. 如果有多个数据集, 请用逗号分隔
 - template: 你需要使用的 prompt 模板. 请根据你选择的模型填写其相应的模板. 例如 Qwen2.5 的模板为 qwen
 - cutoff_len: 最大输入长度, 你可以近似理解为上下文. 越长的上下文需要的显存越多, 而过短的上下文可能导致数据集内容被异常截断, 导致模型训练效果不佳. 你需要自行选择

@@ -64,7 +64,7 @@ params:
   article:
     math: true
     toc: true
-    readingTime: false
+    readingTime: true
     wordCount: true
     license:
       enabled: true

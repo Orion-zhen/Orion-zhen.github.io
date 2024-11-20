@@ -1,6 +1,6 @@
 ---
 date: "2024-11-20T21:43:22+08:00"
-draft: true
+draft: false
 title: "ICML 2024 tutorial: 语言模型物理学"
 slug: "icml-2024-tutorial-notes"
 description: "我应该怎么训练大模型?"

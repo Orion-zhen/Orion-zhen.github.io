@@ -11,7 +11,7 @@ links:
     image: assets/ts-logo-128.jpg
   - title: Lico Meta
     description: Innovating at the nexus of tech and soul.  生如夏花
-    website: https://licometa.pages.dev
+    website: https://blog.licometa.com
 menu:
     main: 
         weight: -50

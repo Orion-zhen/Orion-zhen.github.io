@@ -71,11 +71,11 @@ params:
       default: GNU General Public License v3.0
 
   comments:
-    enabled: true
+    enabled: false
     provider: utterances
 
     utterances:
-      repo: Orion-zhen/Orion-zhen.github.io
+      repo:
       issueTerm: pathname
       label: comment
 

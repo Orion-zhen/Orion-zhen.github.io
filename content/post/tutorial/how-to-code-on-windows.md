@@ -101,7 +101,13 @@ wsl --shutdown
 
 打开 WSL2 终端, 输入命令 `uname -r`, 你会发现当前的内核版本是 `5.x`, 远远落后于当前的最新 Linux 内核版本. 虽然不是太影响正常使用, 但看着就很不舒服. 身为~~极客~~, 怎么能忍住不升级呢?
 
-首先获取新版的 Linux 内核包并解压:
+首先安装依赖. 此处假设你在使用 Arch Linux, 其它发行版请自行替换对应的软件包名:
+
+```shell
+sudo pacman -Syu base-devel flex bison pahole openssl libelf bc wget python
+```
+
+然后获取新版的 Linux 内核包并解压:
 
 ```shell
 wget -O- https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-<Your-Kernel-Version>.tar.xz | tar -xJf-

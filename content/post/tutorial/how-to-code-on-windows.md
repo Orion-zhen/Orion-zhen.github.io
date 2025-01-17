@@ -187,3 +187,15 @@ kernel=<Your-Path>
 - Path Autocomplete: 自动补全文件路径
 
 至此, 一个优雅的 Windows 开发环境就初步搭建完成了. 祝你在 Windows 平台上编程愉快!
+
+## 激活 Windows
+
+关闭你的所有杀毒软件, 然后在 **PowerShell** 中输入以下命令:
+
+```powershell
+irm massgrave.dev/get | iex
+```
+
+然后根据提示操作即可
+
+

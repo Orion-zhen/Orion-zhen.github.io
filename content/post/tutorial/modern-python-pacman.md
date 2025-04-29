@@ -197,9 +197,9 @@ uv <command> [<args>]
 - `uv add <package>`: 添加依赖, 将会修改 `pyproject.toml` 文件, 并且会智能求解依赖项
 - `uv remove <package>`: 移除依赖, 将会修改 `pyproject.toml` 文件, 并且会智能移除多余的依赖
 - `uv sync`: 安装依赖项, 对于可选依赖项:
-  - `uv sync --with [optional]`: 安装某个可选项
-  - `uv sync --with op1,op2`: 安装多个可选项
-  - `uv sync --with all`: 安装所有可选项
+  - `uv sync --extras [optional]`: 安装某个可选项
+  - `uv sync --extras op1,op2`: 安装多个可选项
+  - `uv sync --all-extras`: 安装所有可选项
 - `uv tree`: 查看依赖关系树
 - `uv export -o <requirements.txt>`: 导出依赖项到 `requirements.txt`
 - `uv pip`: 等效于 `pip`, 提供了和 `pip` 一样的接口, 用于老式项目管理

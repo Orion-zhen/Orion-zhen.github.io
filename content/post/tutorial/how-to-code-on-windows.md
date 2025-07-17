@@ -199,7 +199,7 @@ kernel=<Your-Path>
 关闭你的所有杀毒软件, 然后在 **PowerShell** 中输入以下命令:
 
 ```powershell
-irm massgrave.dev/get | iex
+irm https://get.activated.win | iex
 ```
 
 然后根据提示操作即可

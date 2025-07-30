@@ -373,3 +373,9 @@ locale-gen
 5. 保存, 应用所有操作, 退出.
 
 待 Windows 完成后, 进行上述操作的逆操作即可.
+
+在安装完双系统后, 会有时间不同步的问题. 这是因为 Windows 会将主板时间解释为 RTC, 而 Linux 会将主板时间解释为 UTC. 为了解决这个问题, 最方便的是在 Linux 上修改, 使其将主板时间解释为 UTC:
+
+```bash
+timedatectl set-local-rtc 1 --adjust-system-clock
+```

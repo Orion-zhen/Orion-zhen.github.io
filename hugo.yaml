@@ -140,6 +140,12 @@ menu:
       params:
         icon: mood-spark
 
+    - identifier: our
+      name: our
+      url: https://orion-zhen.github.io/our
+      params:
+        icon: packages
+
     - identifier: ko-fi
       name: Ko-fi
       url: https://ko-fi.com/orionzhen

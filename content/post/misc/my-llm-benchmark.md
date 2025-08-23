@@ -166,13 +166,13 @@ U = antilog [(ΣU_H – ΣU_L) / (ΣS_H – ΣS_L) × log(S_H/S_L) + log T_L]
 将$f(x)$在$[0, \pi]$展为余弦级数, 由公式可得
 
 $$
-\begin{aligned}
-a_n &= \frac{2}{\pi} \int_0^\pi (x+1) \cos \frac{n\pi x}{\pi} dx \\
-
-&= \frac{2}{\pi} \left[ (x+1) \frac{1}{n} \sin nx + \frac{1}{n^2} \cos nx \right]_0^\pi \\
-
-&= -\frac{4}{n^2\pi}, n = 2k-1
-\end{aligned}
+a_n = \frac{2}{\pi} \int_0^\pi (x+1) \cos \frac{n\pi x}{\pi} dx
+$$
+$$
+= \frac{2}{\pi} \left[ (x+1) \frac{1}{n} \sin nx + \frac{1}{n^2} \cos nx \right]_0^\pi
+$$
+$$
+= -\frac{4}{n^2\pi}, n = 2k-1
 $$
 
 $$
@@ -423,15 +423,16 @@ $$
 由于随机变量 $Y$ 是随机变量 $X$ 的函数, 故根据数学期望的定义,
 
 $$
-\begin{aligned}
-E(Y) &= 0 \cdot P(Y = 0) + \int_{100}^{+\infty} (x-100)f(x) \, dx = -100^2 \int_{100}^{+\infty} (x-100)d((100+x)^{-2}) = -100^2 \int_{100}^{+\infty} \frac{x-100}{(100+x)^2} \, dx \\
-
-&= -100^2 \int_{100}^{+\infty} \frac{x-100}{(100+x)^2} \, dx = -100^2 \left[ \frac{x-100}{(100+x)^2} \right]_{100}^{+\infty} + 100^2 \int_{100}^{+\infty} \frac{1}{(100+x)^2} \, dx \\
-
-&= -100^2 \left[ \frac{x-100}{(100+x)^2} \right]_{100}^{+\infty} + 100^2 \left[ -\frac{1}{100+x} \right]_{100}^{+\infty} = -100^2 \left( 0 - \frac{1}{100} \right) + 100^2 \left( 0 - \left( -\frac{1}{200} \right) \right) \\
-
-&= 50
-\end{aligned}
+E(Y) = 0 \cdot P(Y = 0) + \int_{100}^{+\infty} (x-100)f(x) \, dx = -100^2 \int_{100}^{+\infty} (x-100)d((100+x)^{-2}) = -100^2 \int_{100}^{+\infty} \frac{x-100}{(100+x)^2} \, dx
+$$
+$$
+= -100^2 \int_{100}^{+\infty} \frac{x-100}{(100+x)^2} \, dx = -100^2 \left[ \frac{x-100}{(100+x)^2} \right]_{100}^{+\infty} + 100^2 \int_{100}^{+\infty} \frac{1}{(100+x)^2} \, dx
+$$
+$$
+= -100^2 \left[ \frac{x-100}{(100+x)^2} \right]_{100}^{+\infty} + 100^2 \left[ -\frac{1}{100+x} \right]_{100}^{+\infty} = -100^2 \left( 0 - \frac{1}{100} \right) + 100^2 \left( 0 - \left( -\frac{1}{200} \right) \right)
+$$
+$$
+= 50
 $$
 
 由于 $N$ 服从参数为 8 的泊松分布, 故 $P(N=n) = \frac{8^n e^{-8}}{n!}$, 进一步可得 $P(N=0) = e^{-8}$.
@@ -451,31 +452,28 @@ $$
 由条件概率公式可得
 
 $$
-\begin{aligned}
-P(M=k, N=n) &= P(M=k|N=n)P(N=n) = C_n^k p^k (1-p)^{n-k} \frac{8^n e^{-8}}{n!} \\
-
-&= \frac{n!}{k!(n-k)!} \left( \frac{1}{4} \right)^k \left( \frac{3}{4} \right)^{n-k} \frac{8^n e^{-8}}{n!} = \frac{3^{n-k} 2^{n-k} 8^n e^{-8}}{k!(n-k)!} \\
-
-&= \frac{6^n k^k 8^n e^{-8}}{k!(n-k)!}
-\end{aligned}
+P(M=k, N=n) = P(M=k|N=n)P(N=n) = C_n^k p^k (1-p)^{n-k} \frac{8^n e^{-8}}{n!}
+$$
+$$
+= \frac{n!}{k!(n-k)!} \left( \frac{1}{4} \right)^k \left( \frac{3}{4} \right)^{n-k} \frac{8^n e^{-8}}{n!} = \frac{3^{n-k} 2^{n-k} 8^n e^{-8}}{k!(n-k)!}
+$$
+$$
+= \frac{6^n k^k 8^n e^{-8}}{k!(n-k)!}
 $$
 
 由此可得, 当 $k \neq 0$ 时,
 
 $$
-\begin{aligned}
-P(M = k) &= \sum_{n=k}^{\infty} P(M=k, N=n) = \sum_{n=k}^{\infty} \frac{6^{n-k} 2^k e^{-8}}{k!(n-k)!} = \frac{2^k e^{-2}}{k!} \sum_{n=k}^{\infty} \frac{6^{n-k} e^{-6}}{(n-k)!} \\
-
-&= \frac{2^k e^{-2}}{k!} \sum_{n=0}^{\infty} \frac{6^n e^{-6}}{n!}.
-\end{aligned}
+P(M = k) = \sum_{n=k}^{\infty} P(M=k, N=n) = \sum_{n=k}^{\infty} \frac{6^{n-k} 2^k e^{-8}}{k!(n-k)!} = \frac{2^k e^{-2}}{k!} \sum_{n=k}^{\infty} \frac{6^{n-k} e^{-6}}{(n-k)!}
 $$
-
 $$
-\begin{aligned}
-P(M = 0) &= \sum_{n=0}^{\infty} P(M=0, N=n) = e^{-8} + \sum_{n=1}^{\infty} P(M=0, N=n) = e^{-8} + \sum_{n=1}^{\infty} \frac{6^{n-1} 2^0 e^{-6}}{1!(n-1)!} = e^{-8} + \sum_{n=0}^{\infty} \frac{6^n e^{-6}}{n!}. \\
-
-&= e^{-2} \sum_{n=0}^{\infty} \frac{6^n e^{-6}}{n!}.
-\end{aligned}
+= \frac{2^k e^{-2}}{k!} \sum_{n=0}^{\infty} \frac{6^n e^{-6}}{n!}.
+$$
+$$
+P(M = 0) = \sum_{n=0}^{\infty} P(M=0, N=n) = e^{-8} + \sum_{n=1}^{\infty} P(M=0, N=n) = e^{-8} + \sum_{n=1}^{\infty} \frac{6^{n-1} 2^0 e^{-6}}{1!(n-1)!} = e^{-8} + \sum_{n=0}^{\infty} \frac{6^n e^{-6}}{n!}.
+$$
+$$
+= e^{-2} \sum_{n=0}^{\infty} \frac{6^n e^{-6}}{n!}.
 $$
 
 由泊松分布的定义可知, 服从参数为 6 的泊松分布的随机变量 $Z$ 的分布律为 $P(Z = n) = \frac{6^n e^{-6}}{n!}$. 由分布律的性质可得, $\sum_{n=0}^{\infty} \frac{6^n e^{-6}}{n!} = 1$. 于是, $P(M=k) = \frac{2^k e^{-2}}{k!}$, $k=0,1,2,\dots$.

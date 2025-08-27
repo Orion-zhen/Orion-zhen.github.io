@@ -210,7 +210,7 @@ z=t
 $$
 
 旋转一周得到的曲面, $\Sigma_1$ 是
-$\Sigma$ 介于平面 $x+y+z=0$ 与 $x+y+z=1$ 之间部分的外侧. 计算曲面积分 $\iint_{\Sigma_1} (y+1)dxdz+(z+2)dxdy$.
+$\Sigma$ 介于平面 $x+y+z=0$ 与 $x+y+z=1$ 之间部分的外侧. 计算曲面积分 $\iint_{\Sigma_1} xdydz+(y+1)dxdz+(z+2)dxdy$.
 ```
 
 设 $\Sigma$ 是由直线
@@ -233,7 +233,7 @@ z=t
 $$
 
 旋转一周得到的曲面, $\Sigma_1$ 是
-$\Sigma$ 介于平面 $x+y+z=0$ 与 $x+y+z=1$ 之间部分的外侧. 计算曲面积分 $\iint_{\Sigma_1} (y+1)dxdz+(z+2)dxdy$.
+$\Sigma$ 介于平面 $x+y+z=0$ 与 $x+y+z=1$ 之间部分的外侧. 计算曲面积分 $\iint_{\Sigma_1} xdydz(y+1)dxdz+(z+2)dxdy$.
 
 #### 参考答案
 

@@ -85,8 +85,9 @@ dependencies = [
     "torch",
     "transformers",
     # 可以按照不同的操作系统来配置
-    "django>2.1; os_name != 'nt'",
-    "django>2.0; os_name == 'nt'",
+    "django>2.0; sys_platform == 'linux'",
+    "django>2.1; sys_platform == 'darwin'",
+    "django>2.2; sys_platform == 'win32'",
 ]
 
 # 可选依赖, 可以通过类似于 `pip install ".[cli]" 的形式安装
@@ -97,6 +98,8 @@ cli = [
     "click",
 ]
 ```
+
+> 依赖项条件字段语法可参考 [PEP-508](https://peps.python.org/pep-0508) 和 [PEP-496](https://peps.python.org/pep-0496)
 
 #### 可执行脚本入口
 

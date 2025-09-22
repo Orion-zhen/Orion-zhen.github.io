@@ -10,8 +10,8 @@ links:
     website: https://www.typescriptlang.org
     image: assets/ts-logo-128.jpg
   - title: Lico Meta
-    description: Innovating at the nexus of tech and soul.  生如夏花
-    website: https://licometa.pages.dev
+    description: Orion-zhen Sama’s possession ❤️
+    website: https://orion-zhen-possesses.me
 menu:
     main: 
         weight: -50

@@ -188,3 +188,27 @@ immich-machine-learning:
 ```
 
 CLIP 模型应满足的目录结构为 `/cache/clip/<model name>`. 可以提前在宿主机环境中下载好模型到本地, 然后挂载进 immich 容器中. 这里推荐专门为多语言设计的模型 [nllb-clip-large-siglip__v1](https://huggingface.co/immich-app/nllb-clip-large-siglip__v1), 完成下载后只需在 immich 管理设置 -> 机器学习设置 -> 智能搜索 中填入对应的模型名即可.
+
+#### 迁移数据库
+
+Immich [将文件路径保存在数据库中](https://github.com/immich-app/immich/discussions/3299), 它不会扫描库文件夹来更新数据库, 因此备份非常重要.
+
+**备份**:
+
+首先进入到存在 `compose.yaml` 文件存在的文件夹, 然后执行命令:
+
+```bash
+docker compose exec -T database pg_dumpall --clean --if-exists -U postgres | gzip > immich_db_backup.sql.gz
+```
+
+这行命令的意思是, 让 `docker` 在 `compose.yaml` 文件中找到 `database` 对应的容器, 进入其中并执行 `pg_dumpall ...` 命令. `-U` 参数指定了数据库用户, 一般来说是默认的 `postgres`. 最终在导出数据后将其压缩为一个压缩包.
+
+**恢复**:
+
+将上一步中得到的压缩包移动到新设备上的 `compose.yaml` 文件所在的目录. 首先运行 `docker compose up -d` 启动一个全新的 immich 实例, 然后在当前目录下执行:
+
+```bash
+gunzip --stdout immich_db_backup.sql.gz | sed "s/SELECT pg_catalog.set_config('search_path', '', false);/SELECT pg_catalog.set_config('search_path', 'public, pg_catalog', true);/g" | docker compose exec -i database psql -U postgres
+```
+
+其中 `sed` 命令的作用在于避免因为某些插件在全新的实例中不存在而导致的恢复失败的情况.

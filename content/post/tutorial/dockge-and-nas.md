@@ -212,3 +212,58 @@ gunzip --stdout immich_db_backup.sql.gz | sed "s/SELECT pg_catalog.set_config('s
 ```
 
 其中 `sed` 命令的作用在于避免因为某些插件在全新的实例中不存在而导致的恢复失败的情况.
+
+### 音乐服务
+
+使用 Navidrome + music-tag-web + symforium 来实现云音乐播放.
+
+选用 Navidrome 的原因在于, 它是一个专注于音乐管理的方案, 且提供了 Subsonic API 兼容的服务, 可以对接许多 Subsonic App. Navidrome 本身完全依靠音乐文件中内置的元信息来整理音乐, 完全不管实际的目录结构如何. 所以一个能管理音乐元数据的方案就尤为必要. 这里选择 music-tag-web 来作为音乐文件的打标工具. 最后需要一个手机 App 来连接 Navidrome, 这里我选择需要付费 ~6$ 的 symforium, 它提供了很多强大的功能, 且 UI 美观.
+
+#### Navidrome
+
+```yaml
+services:
+  core:
+    environment:
+      - TZ=Asia/Shanghai
+      - ND_LOGLEVEL=info
+      - ND_DEFAULTLANGUAGE=zh-Hans # 默认语言改为中文
+      - ND_ENABLEGRAVATAR=false # 禁用 Gravatar 头像集成
+      - ND_ENABLEREPLAYGAIN=false # 禁用 Web 界面调整回放增益的功能
+      - ND_ENABLESHARING=false # 禁用分享功能，如果你需要分享给别人可以打开
+      - ND_ENABLESTARRATING=false # 禁用 Web 界面的五星评级歌曲功能
+      - ND_ENABLEUSEREDITING=false # 禁止普通用户更改自身信息与登录凭据，安全考量
+      - ND_LASTFM_ENABLED=false # 禁用 Last.fm集成
+      - ND_LISTENBRAINZ_ENABLED=false # 禁用 ListenBrainZ 元数据库集成
+      - ND_MAXSIDEBARPLAYLISTS=300 # 调整侧边最多显示的播放列表数为 300（默认 100）
+      - ND_SCANNER_GROUPALBUMRELEASES=true # 禁用按照日期区分专辑，防止 Navidrome 错误的按照日期从专辑中拆分单曲
+    image: docker.1ms.run/deluan/navidrome:latest
+    ports:
+      - 5006:4533
+    restart: unless-stopped
+    volumes:
+      - ./data:/data
+      - 音乐目录:/music:ro # 注意音乐文件夹是ro即只读的，Navidrome 不需要也不会对你的音乐库实际文件进行任何修改操作
+```
+
+#### music-tag-web
+
+> 现在最新 V1 版本的 music-tag-web 调用网易 API 时存在 bug, 所以回退到 2.5.6
+
+```yaml
+services:
+  music-tag:
+    image: docker.1ms.run/xhongc/music_tag_web:2.5.6
+    container_name: music-tag-web
+    ports:
+      - 5005:8002
+    volumes:
+      - 音乐目录:/app/media:rw
+      - ./data:/app/data
+    restart: unless-stopped
+networks: {}
+```
+
+#### symforium
+
+添加 (Open) Subsonic 类型的媒体源即可. 值得注意的是, 存在内网和外网可以要使用不同的服务器 URL 的情况. 当你在家里, 跟 Navidrome 服务器处在同一个网络环境下时, 可以直接通过 IP 访问服务器, 而当你在外面时才通过公网域名去访问. 这一点可以通过配置媒体源的**次要连接**来实现. 在**主要连接**中填写内网 IP, 在**次要连接**中填写公网域名. 这样就可以做到在内网下优先使用 IP, 仅当 IP 不可用时才会切换到次要连接的公网域名. 不过切换需要一定时间, 这个时间内无法与服务器进行同步.

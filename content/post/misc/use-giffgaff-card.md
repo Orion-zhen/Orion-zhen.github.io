@@ -4,11 +4,15 @@ draft: false
 title: "giffgaff 电话卡使用指南"
 slug: "use-giffgaff-card"
 description: "拥有一张英国的电话卡"
-image:
+image: /post/misc/use-giffgaff-card/cover.jpg
 categories:
+    - 杂志
 tags:
+    - 电话卡
 license: GNU General Public License v3.0
 ---
+
+> [封面出处](https://unsplash.com/photos/sim-card-o0kPG3RirHs)
 
 ## 准备工作
 

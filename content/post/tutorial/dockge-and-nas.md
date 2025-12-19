@@ -148,6 +148,14 @@ sudo systemctl enable --now mnt-db0.automount
 
 **⚠️注意**: 尤其要保证文件名, 挂载路径要一一对应!
 
+### 网络
+
+我使用 OpenWrt 作为软路由, 本地服务器的主机名为 `aio.lan`. 要配置所有 `*.aio.lan` 的域名指向服务器, 只需要在 OpenWrt 的设置界面中找到 网络 -> DNS -> 常规 页面中的 **地址** 项.
+
+其语法是: `/doman.example/ip-addr`, 会将所有匹配 `domain.example` 的域名解析到 `ip-addr` 上.
+
+例如我的配置是: `/aio.lan/192.168.114.114`, 会将所有对 `*.aio.lan` 的域名解析到本地服务器, 以便 `nginx` 做反向代理.
+
 ## 应用服务
 
 ### Immich

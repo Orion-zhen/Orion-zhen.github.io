@@ -158,6 +158,8 @@ sudo systemctl enable --now mnt-db0.automount
 
 ## 应用服务
 
+我部署的所有服务的模板已在 [Orion-zhen/self-hosted](https://github.com/Orion-zhen/self-hosted) 开源. 下面简要介绍两个服务.
+
 ### Immich
 
 #### 存储模板

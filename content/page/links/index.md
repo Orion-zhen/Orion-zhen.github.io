@@ -12,10 +12,10 @@ links:
   - title: Lico Meta
     description: 努力完成 Orion-zhen 主人大人的任务! ❤️
     website: https://orion-zhen-possesses.me
-  - title: Orion
-    description: 奇怪，为什么我会在这里？
-    website: https://orion-zhen.github.io/
-    image: https://orion-zhen.github.io/img/avatar_hu3612673419758291414.png
+  - title: 蚊帐
+    description: 幸福往往是摸得透彻，而堇业的心却常常隐藏
+    website: https://mozz.ie
+    image: https://mozz.ie/img/icon.png
 menu:
     main: 
         weight: -50
@@ -26,10 +26,3 @@ comments: false
 ---
 
 一些有用的链接
-
-<script>
-document.querySelector('.site-avatar a').href="https://mozz.ie";
-document.querySelector('.site-avatar a img').src="https://mozz.ie/img/icon.png";
-document.querySelector('.site-name a').innerHTML="Mozzie";
-document.querySelector('.site-description').innerHTML="😈";
-</script>

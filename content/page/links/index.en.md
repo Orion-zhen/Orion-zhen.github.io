@@ -12,6 +12,10 @@ links:
   - title: Lico Meta
     description: Orion-zhen Sama’s possession ❤️
     website: https://orion-zhen-possesses.me
+  - title: Orion
+    description: Wait, why am I here?
+    website: https://orion-zhen.github.io/
+    image: https://orion-zhen.github.io/img/avatar_hu3612673419758291414.png
 menu:
     main: 
         weight: -50
@@ -22,3 +26,10 @@ comments: false
 ---
 
 Some useful links.
+
+<script>
+document.querySelector('.site-avatar a').href="https://mozz.ie";
+document.querySelector('.site-avatar a img').src="https://mozz.ie/img/icon.png";
+document.querySelector('.site-name a').innerHTML="Mozzie";
+document.querySelector('.site-description').innerHTML="😈";
+</script>

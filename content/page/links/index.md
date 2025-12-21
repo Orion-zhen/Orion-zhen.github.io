@@ -15,6 +15,7 @@ links:
   - title: Orion
     description: 奇怪，为什么我会在这里？
     website: https://orion-zhen.github.io/
+    image: https://orion-zhen.github.io/img/avatar_hu3612673419758291414.png
 menu:
     main: 
         weight: -50

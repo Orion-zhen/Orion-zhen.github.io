@@ -12,6 +12,10 @@ links:
   - title: Lico Meta
     description: Orion-zhen Sama’s possession ❤️
     website: https://orion-zhen-possesses.me
+  - title: Mozzie
+    description: There's nothing here.
+    website: https://mozz.ie
+    image: https://mozz.ie/img/icon.png
 menu:
     main: 
         weight: -50

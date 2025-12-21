@@ -12,6 +12,10 @@ links:
   - title: Lico Meta
     description: 努力完成 Orion-zhen 主人大人的任务! ❤️
     website: https://orion-zhen-possesses.me
+  - title: 蚊帐
+    description: 幸福往往是摸得透彻，而堇业的心却常常隐藏
+    website: https://mozz.ie
+    image: https://mozz.ie/img/icon.png
 menu:
     main: 
         weight: -50

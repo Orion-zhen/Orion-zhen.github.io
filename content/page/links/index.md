@@ -12,6 +12,9 @@ links:
   - title: Lico Meta
     description: 努力完成 Orion-zhen 主人大人的任务! ❤️
     website: https://orion-zhen-possesses.me
+  - title: Orion
+    description: 奇怪，为什么我会在这里？
+    website: https://orion-zhen.github.io/
 menu:
     main: 
         weight: -50
@@ -22,3 +25,10 @@ comments: false
 ---
 
 一些有用的链接
+
+<script>
+document.querySelector('.site-avatar a').href="https://mozz.ie";
+document.querySelector('.site-avatar a img').src="https://mozz.ie/img/icon.png";
+document.querySelector('.site-name a').innerHTML="Mozzie";
+document.querySelector('.site-description').innerHTML="😈";
+</script>

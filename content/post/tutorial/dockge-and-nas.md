@@ -94,6 +94,73 @@ docker-compose up -d
 
 值得注意的是, docker 容器内要访问宿主机的网络, `host.docker.internal` 在 Linux 下是不行的, 必须显式地指定 `172.17.0.1`
 
+## 存储
+
+### 文件格式
+
+我选用 BtrFS. 因为它是较现代的, Linux 原生支持的文件系统, 也被群晖等系统作为默认的文件系统. 相比于 ZFS, 它不需要经过额外的 dkms 编译, 同时具备大部分 ZFS 的功能(如快照, 校验和, 压缩等), 且对内存的压力相对较小, 适合个人用户使用.
+
+### 格式化硬盘
+
+在开始前检查需要格式化的硬盘的挂载情况和设备号, 再三确定你要格式化的就是那块硬盘, 别搞错了:
+
+```shell
+lsblk -f
+```
+
+格式化 btrfs 需要用到 `btrfs-prog` 软件包:
+
+```shell
+sudo apt install btrfs-progs
+```
+
+以 `/dev/sda` 硬盘为例. 首先卸载所有的分区:
+
+```shell
+sudo umount /dev/sda1 # 如果有多个分区, 都要全部卸载
+```
+
+然后删除旧的数据和分区:
+
+```shell
+sudo wipefs -a /dev/sda
+```
+
+接下来创建新的 GPT 分区表. 尽管 btrfs 可以直接格式化整个裸盘, 但为了兼容性和管理方便, 还是先创建分区表然后格式化分区:
+
+```shell
+sudo parted /dev/sda mklabel gpt
+```
+
+创建一个占据 100% 空间的分区:
+
+```shell
+sudo parted /dev/sda mkpart primary btrfs 0% 100%
+```
+
+再次使用 `lsblk` 查看硬盘, 应该能看到 `/dev/sda` 下面多了一个分区 `/dev/sda1`.
+
+分区创建成功, 接下来将这个分区格式化为 btrfs:
+
+```shell
+sudo mkfs.btrfs -f -L "label" /dev/sda1
+```
+
+这时分区应该格式化完成, 可以挂载了. 创建一个临时挂载点来检查结果:
+
+```shell
+sudo mkdir -p /mnt/tmp
+sudo mount /dev/sda1 /mnt/tmp
+```
+
+检查挂载:
+
+```shell
+df -h | grep label
+```
+
+如果看到输出, 则表明挂载成功.
+
 ### 硬盘自动挂载
 
 使用 `systemd.automount` 作为自动挂载的方案.
@@ -107,48 +174,151 @@ lsblk -f
 然后创建想要挂载的目录:
 
 ```bash
-sudo mkdir -p /mnt/db0
+sudo mkdir -p /mnt/nas0
 ```
 
-接着创建 `mount` 单元文件. 注意文件名必须和挂载路径完全对应. 例如挂载点 `/mnt/db0` 对应的文件名就是 `mnt-db0.mount`. 创建文件 `/etc/systemd/system/mnt-db0.mount`:
+接着创建 `mount` 单元文件. 注意文件名必须和挂载路径完全对应. 例如挂载点 `/mnt/nas0` 对应的文件名就是 `mnt-nas0.mount`. 创建文件 `/etc/systemd/system/mnt-nas0.mount`:
 
 ```toml
+# file: /etc/systemd/system/mnt-nas0.mount
 [Unit]
-Description=Mount for db0
+Description=Mount nas0
+# 只有在本地文件系统准备好后才尝试挂载
+After=local-fs.target
 
 [Mount]
 What=/dev/disk/by-uuid/<UUID>
-Where=/mnt/db0
-Type=ntfs # 根据硬盘具体的文件类型
-Options=defaults,noatime # 挂载选项, noatime 可以提高性能
+Where=/mnt/nas0
+Type=btrfs
+# comperss=zstd: 智能透明压缩
+# noatime: 读取文件时不写入访问时间, 延长机械硬盘寿命
+# space_cache=v2: 提升大容量硬盘空闲空间索引性能
+Options=defaults,compress=zstd,noatime,space_cache=v2
 
 [Install]
 WantedBy=multi-user.target
-```
-
-再创建 `automount` 单元文件. 文件名必须和 `mount` 文件匹配. 创建文件 `/etc/systemd/system/mnt-db0.automount`:
-
-```toml
-[Unit]
-Description=Automount for db0
-
-[Automount]
-Where=/mnt/db0
-TimeoutIdleSec=15m # 可选, 如果 15 分钟没有访问, 自动卸载
-
-[Install]
-WantedBy=multi-user.target
-```
-
-最终, 启动 `automount` 服务. 注意, 只需要启动 `automount`, 它会自动管理 `mount` 服务:
-
-```bash
-sudo systemctl enable --now mnt-db0.automount
 ```
 
 **⚠️注意**: 尤其要保证文件名, 挂载路径要一一对应!
 
-### 网络
+### 池化存储
+
+我有两块硬盘, 我想将它们合并为一个逻辑上的大硬盘, 但又不希望它们就此被绑死在一起, 我希望这两块硬盘拆开后都可以分别独立地使用. 根据这种需求, 我不能使用 RAID, 因为 RAID 把两块盘绑在一起, 任何一块单独拿出来都是不能用的, 而且任何一块盘坏了, 整个 RAID 阵列就会出问题. 我也不能使用 btrfs 原生的扩容方案, 因为同样会将两块盘绑在一起.
+
+最终我选择的是存储池化方案, 由 MergerFS 驱动. MergerFS 并不是一个文件系统, 而是一个抽象层, 将底层的若干个硬盘中的文件汇总展示在一处, 就好像是一个整体的硬盘一样.
+
+仿照前面的硬盘的 mount 单元, 为 MergerFS 也创立一个单元文件 `/etc/systemd/system/mnt-pool.mount`:
+
+```toml
+# file: /etc/systemd/system/mnt-pool.mount
+[Unit]
+Description=MergerFS Pool Storage
+# 需要所有子硬盘都已经挂载成功
+Requires=mnt-nas0.mount mnt-nas1.mount
+After=mnt-nas0.mount mnt-nas1.mount
+
+[Mount]
+# 语法为 /path1:/path2:/path3
+What=/mnt/nas0:/mnt/nas1
+# 合并后的挂载点
+Where=/mnt/pool
+Type=fuse.mergerfs
+
+# 挂载参数
+# defaults,allow_other: 允许非 root 用户访问 FUSE 文件系统
+# use_ino: 让 MergerFS 提供固定的 inode 号, 避免被误认为是新文件
+# cache.files=partial: 启用部分缓存, 提升读取性能
+# dropcacheonclose=true: 关闭文件时释放缓存, 释放内存
+# category.create=epmfs: 新文件写入策略, 优先寻找已经存在的路径, 否则找空闲最多的硬盘
+# minfreespace=750G: 对 8TB 硬盘, 设置最后 750G 为保留空间, 以便维护 btrfs 文件系统
+# fsname=mergerfs: 让 df -h 显示的名字更好看
+Options=defaults,allow_other,use_ino,cache.files=partial,dropcacheonclose=true,category.create=epmfs,minfreespace=750G,fsname=mergerfs
+
+[Install]
+WantedBy=multi-user.target
+```
+
+有两点配置需要说明:
+
+- `category.create`: 新文件存放策略. 我希望属于同一个文件夹的文件不要那么稀碎, 换言之, 我不希望例如一个相册里的相片分散在不同的硬盘里. `epmfs` 的策略是 Existing Path, Most Free Space, 即当你写入一个文件时, MergerFS 会检查这个文件所在的文件夹是否已经存在于某块物理硬盘上, 如果在, 则直接写入, 完全无视这块硬盘还剩下多少空间. 如果不是, 则回退到 `mfs` 策略, 寻找剩余空间最大的硬盘来创建文件.
+- 使用 `epmfs` 策略后, 如果要精细调控文件去向, 可以手动在底层的硬盘挂载目录里创建对应的文件夹, 让 MergerFS 发现在某个硬盘上已经存在对应目录, 并写入文件.
+- `minfreespace`: 当剩余可用空间不足这个数值时, MergerFS 将不再往这里写入新数据(除非 `epmfs` 策略指定). 这里我将其设置为 750GB 以适配我的 8TB 硬盘. 一般地, 对 btrfs 这种系统, 需要留出大约 10%~20% 的剩余空间, 用于 CoW 和 Balance 等操作.
+
+最后使用 `systemd.automount` 单元文件来自动挂载 MergerFS 存储池. 创建 `/etc/systemd/system/mnt-pool.automount`:
+
+```toml
+# file: /etc/systemd/system/mnt-pool.automount
+[Unit]
+Description=Automount MergerFS Pool
+
+[Automount]
+Where=/mnt/pool
+# 用不自动卸载, 减少磁头移动, 提升硬盘寿命
+TimeoutIdleSec=0
+
+[Install]
+WantedBy=multi-user.target
+```
+
+最后启动服务:
+
+```shell
+sudo systemctl enable --now mnt-pool.automount
+```
+
+### 硬盘维护
+
+**1. 去重写**:
+
+btrfs 是写时复制的文件系统, 这容易导致文件碎片化. 对于数据库文件或者虚拟机镜像, CoW 会导致严重的性能下降和磁盘抖动. 所以在部署需要数据库的服务, 或者下载缓存(比如 BT 的临时下载目录)等时, 一定要避免将服务的数据库文件挂载到机械硬盘上. 如果确实要这样做, 则应该在部署服务前先创建一个相应的空目录, 并设置在这个目录下设置禁用 CoW:
+
+```shell
+chattr +C /mnt/nas0/path/to/database
+```
+
+注意, `chattr +C` 只对空文件或者空目录生效. 如果目录里已有数据, 则应该先移开数据, 然后设置属性, 最后把数据移回来.
+
+**2. 定期维护**:
+
+- 清洗: btrfs 能检测数据损坏. `btrfs scrub start /mnt/nas0`.
+- 均衡: 重写数据块, 回收未使用的空间. `btrfs balance start -dusage=5 -musage=5 /mnt/nas0`. 按需执行, 但是不要频繁做全量 balance, 建议每周或每月只处理使用率低于 5%~10% 的块. 除非磁盘爆满且无法写入, 否则**严禁**在机械硬盘上执行无参数的均衡操作, 因为那会重写整个磁盘, 耗时非常长, 且损耗非常大!
+
+在删除了大量小文件时, 应该及时使用均衡命令来管理碎片化的可用空间.
+
+**3. 碎片整理**:
+
+这里的碎片指的是文件碎片. 由于 CoW 的特性, 对一个文件修改多次后, 它就会变成一连串的小的数据实体, 就像一块块碎片一样.
+
+一定不要在挂载选项里开启 `autodefrag`, 这对机械硬盘的损伤是极大的. 不要盲目地启用碎片整理, 对 btrfs 而言, 只有在启用了 CoW 后, 对一个文件进行修改, 才会产生不连续的数据, 对于 NAS, 这种场景是非常小的, 因为 NAS 的数据存储通常是一次写入多次读取的.
+
+| 场景特征 | 是否需要碎片整理 | 原因 |
+| --- | --- | --- |
+| 一次写入, 多次读取 | 不需要 | 常见的场景是将别处的大文件(如电影, 文档等)一次性复制到机械硬盘中, 写入时 btrfs 已经分配好了连续的空间, 生来就没有碎片 |
+| 已有快照的文件 | 不需要 | 对快照进行碎片整理, 会破坏原有的快照数据块引用链接 |
+| 长期追加的日志文件 | 需要 | 这是在长期修改的文件, 一段时间后就会变成若干个不连续的小碎块 |
+| BT 下载目录 | 需要 | 如果直接用机械硬盘下载 BT, 由于多线程随机写入, 会导致文件破碎 |
+
+所以不要在挂载硬盘时开启 `autodefrag` 选项, 而是应该每个月定期只对可能产生碎片的目录进行碎片整理:
+
+```shell
+# -t 32M: 只处理碎片化的, 大小小于 32M 的文件, 更大的不要去管
+btrfs filesystem defragment -r -t 32M /mnt/nas0/fragments/dir
+```
+
+要检查是否开启了 `autodefrag` 选项, 只需要:
+
+```shell
+findmnt -t btrfs
+```
+
+### 远程访问
+
+**⚠️注意**: 永远不要将浏览器文件管理器, 如 filebrowser 等服务, 挂载到机械硬盘上. 这种服务在启动时会计算目录大小等索引操作, 会让机械硬盘产生巨量的随机读取, 严重损耗硬盘寿命. 建议使用 sshfs/sftp 实现远程访问.
+
+- PC 端: `sshfs orion@nas:/mnt/pool ~/NAS`
+- 移动端: 开源的 [Material Files](https://github.com/zhanghai/MaterialFiles) 和闭源的 [Solid Explorer](https://play.google.com/store/apps/details?id=pl.solidexplorer2&hl=zh-CN) 都是好用的工具.
+
+## 网络
 
 我使用 OpenWrt 作为软路由, 本地服务器的主机名为 `aio.lan`. 要配置所有 `*.aio.lan` 的域名指向服务器, 只需要在 OpenWrt 的设置界面中找到 网络 -> DNS -> 常规 页面中的 **地址** 项.
 

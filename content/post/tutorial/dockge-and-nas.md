@@ -330,6 +330,28 @@ findmnt -t btrfs
 
 我部署的所有服务的模板已在 [Orion-zhen/self-hosted](https://github.com/Orion-zhen/self-hosted) 开源. 下面简要介绍两个服务.
 
+### Filestash
+
+Filestash 是一个浏览器文件管理器. 不同于 Filebrowser, 它不会对硬盘造成太重的读写负载. 一般来说, 推荐使用 SFTP 的方式从 Filestash 访问宿主机的文件系统. 示例 compose 文件如下:
+
+```yaml
+services:
+  filestash:
+    container_name: filestash
+    image: machines/filestash:latest
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data/state
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 5100:8334
+    # 修复 host.docker.internal
+    extra_hosts:
+      - host.docker.internal:host-gateway
+```
+
+之后在 Filestash 界面中即可通过 SFTP, 从 `host.docker.internal` 域名访问宿主机的文件系统.
+
 ### Immich
 
 #### 存储模板

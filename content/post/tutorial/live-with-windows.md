@@ -379,3 +379,11 @@ locale-gen
 ```bash
 timedatectl set-local-rtc 1 --adjust-system-clock
 ```
+
+但是将 Linux 的时间配置更改后会导致 Linux NTP 失效等问题, 所以还是建议修改 Windos 的注册表, 将主板时间解释为 UTC. 打开管理员终端, 执行:
+
+```pwsh
+reg add "HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\TimeZoneInformation" /v RealTimeIsUniversal /d 1 /t REG_DWORD /f
+```
+
+然后重启即可应用改变.

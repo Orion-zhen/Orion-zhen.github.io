@@ -495,6 +495,246 @@ $$
 1. $\boxed{P(Y > 0) = \frac{1}{4}}$, $\boxed{E(Y) = 50}$
 2. $\boxed{\text{M 服从参数为 2 的泊松分布}}$
 
+## 指令遵循
+
+### 题目一
+
+使用 Python 语言, 实现函数 `is_heavy_prime_factors(n: int) -> bool`. 给定一个正整数 n, 判断其所有质数因子是否仅包含 2 和 3, 且因子 2 的数量是否**严格大于**因子 3 的数量. 如果都是, 则返回 `True`, 否则返回 `False`.
+
+约束条件:
+
+1. 严禁使用任何条件分支语句, 如 `if`, `else`, `match`, `switch`, 三元运算符 `... if ... else` 等.
+2. 严禁使用任何循环语句, 如 `for`, `while` 等.
+3. 严禁使用任何内置的数学库函数.
+4. 严禁将数字转换为字符串或二进制序列.
+5. 严禁对变量重新赋值.
+6. 仅允许使用基本的算术运算符, 逻辑运算符和递归.
+
+测试用例:
+
+```python
+import ast
+import inspect
+
+def is_heavy_prime_factors(n: int) -> bool:
+  # 这里是 AI 答案
+  pass
+
+def test_heavy_prime_factors(func):
+  print(f"--- 正在测试: {func.__name__} ---")
+
+  # 1. 静态代码约束检查 (AST)
+  source = inspect.getsource(func)
+  tree = ast.parse(source)
+
+  for node in ast.walk(tree):
+    # 检查是否使用了 if/else, 循环, 或 match
+    if isinstance(node, (ast.If, ast.IfExp, ast.For, ast.While, ast.Match)):
+      print(f"❌ 约束违规: 代码中发现了违禁节点 <{type(node).__name__}>")
+      return False
+
+  print("✅ 静态约束检查通过 (无分支/无循环)")
+
+  # 2. I/O 逻辑正确性检查
+  # 规则：素因子只能是 2 和 3, 且 2 的数量 > 3 的数量
+  test_cases = [
+    (1, False),   # 无素因子, 0 > 0 为 False
+    (2, True),    # 2^1, 1 > 0 为 True
+    (3, False),   # 3^1, 0 > 1 为 False
+    (4, True),    # 2^2, 2 > 0 为 True
+    (6, False),   # 2^1 * 3^1, 1 > 1 为 False
+    (12, True),   # 2^2 * 3^1, 2 > 1 为 True
+    (18, False),  # 2^1 * 3^2, 1 > 2 为 False
+    (5, False),   # 包含非法素因子 5
+    (10, False),  # 包含非法素因子 5
+    (72, True),   # 72 = 2^3 * 3^2, 3 > 2 为 True
+    (108, False), # 108 = 2^2 * 3^3, 2 > 3 为 False
+  ]
+  
+  for n, expected in test_cases:
+    try:
+      result = func(n)
+      assert result == expected, f"n={n}, 预期={expected}, 实际={result}"
+    except Exception as e:
+      print(f"❌ I/O 测试失败: {e}")
+      return False
+
+  print("✅ I/O 逻辑测试全部通过\n")
+  return True
+
+if __name__ == "__main__":
+  test_heavy_prime_factors(is_heavy_prime_factors)
+```
+
+### 题目二
+
+给定一个 $n \times n$ 的矩阵, 数字从 1 开始, 由外向内顺时针螺旋递增. 使用 Python 语言实现函数 `get_spiral_value(n: int, r: int, c: int) -> int`, 给定矩阵大小 n, 目标行号 r 和列号 c (索引从 0 开始), 直接计算并返回该坐标上的数字.
+
+约束条件:
+
+1. 严禁实例化任何数据结构. 绝对禁止创建列表, 元组, 字典, 集合, 二维数组等来模拟矩阵填充过程.
+2. 严禁使用任何循环语句, 如 `for`, `while` 等来模拟步进或寻址.
+3. 整个函数体内严禁定义超过 4 个局部变量.
+4. 严禁对变量重新赋值.
+
+测试用例:
+
+```python
+import ast
+import inspect
+
+def get_spiral_value(n: int, r: int, c: int) -> int:
+  # 这里是 AI 答案
+  pass
+
+def test_spiral_value(func):
+  print(f"--- 正在测试: {func.__name__} ---")
+
+  # 1. 静态代码约束检查 (AST)
+  source = inspect.getsource(func)
+  tree = ast.parse(source)
+
+  assign_count = 0
+  for node in ast.walk(tree):
+    # 检查是否使用了循环
+    if isinstance(node, (ast.For, ast.While)):
+      print(f"❌ 约束违规: 代码中发现了违禁节点 <{type(node).__name__}>")
+      return False
+    # 检查是否实例化了常见数据结构 (列表、字典、集合)
+    if isinstance(node, (ast.List, ast.ListComp, ast.Dict, ast.DictComp, ast.Set, ast.SetComp)):
+      print(f"❌ 约束违规: 实例化了违禁数据结构 <{type(node).__name__}>")
+      return False
+    # 统计赋值操作数量 (极简状态约束)
+    if isinstance(node, ast.Assign):
+      assign_count += 1
+
+  if assign_count > 4:
+    print(f"❌ 约束违规: 局部变量或赋值操作过多 (计数: {assign_count}, 限制: 4)")
+    return False
+
+  print(f"✅ 静态约束检查通过 (无循环/无容器/赋值计数: {assign_count})")
+
+  # 2. I/O 逻辑正确性检查
+  test_cases = [
+    # n = 3 的螺旋矩阵:
+    # 1 2 3
+    # 8 9 4
+    # 7 6 5
+    (3, 0, 0, 1),
+    (3, 0, 2, 3),
+    (3, 1, 2, 4),
+    (3, 2, 2, 5),
+    (3, 2, 0, 7),
+    (3, 1, 1, 9),
+
+    # n = 4 的螺旋矩阵:
+    #  1  2  3  4
+    # 12 13 14  5
+    # 11 16 15  6
+    # 10  9  8  7
+    (4, 0, 0, 1),
+    (4, 0, 3, 4),
+    (4, 1, 3, 5),
+    (4, 3, 3, 7),
+    (4, 3, 0, 10),
+    (4, 1, 1, 13),
+    (4, 2, 1, 16),
+    (4, 2, 2, 15),
+
+    # n = 5 的中心点
+    (5, 2, 2, 25),
+  ]
+
+  for n, r, c, expected in test_cases:
+    try:
+      result = func(n, r, c)
+      assert result == expected, f"n={n}, r={r}, c={c}, 预期={expected}, 实际={result}"
+    except Exception as e:
+      print(f"❌ I/O 测试失败: {e}")
+      return False
+
+  print("✅ I/O 逻辑测试全部通过\n")
+  return True
+
+if __name__ == "__main__":
+  test_spiral_value(get_spiral_value)
+```
+
+### 题目三
+
+使用 Python 语言实现纯函数 `is_local_peak(x: int, y: int, z: int) -> bool`, 判断 y 是否为**严格的**局部最大值, 即 y 严格大于 x 且 y 严格大于 z. 如果是, 返回 `True`, 否则返回 `False`.
+
+约束条件:
+
+1. 严禁使用任何比较运算符, 包括 `<`, `>`, `<=`, `>=`, `==`, `!=` 等.
+2. 严禁使用任何算数运算符, 包括 `+`, `-`, `*`, `/`, `//`, `%`, `**` 等.
+3. 严禁使用分支条件语句, 包括 `if`, `else`, 三元运算符 `... if ... else ...` 等.
+4. 仅允许使用位运算符, 逻辑运算符和递归.
+
+测试用例:
+
+```python
+import ast
+import inspect
+
+def is_local_peak(x: int, y: int, z: int) -> bool:
+  # 留给 AI 填写的纯位运算解法
+  pass
+
+def test_local_peak(func):
+  print(f"--- 正在测试: {func.__name__} ---")
+
+  source = inspect.getsource(func)
+  tree = ast.parse(source)
+
+  forbidden_binops = (ast.Add, ast.Sub, ast.Mult, ast.Div, ast.FloorDiv, ast.Mod, ast.Pow)
+
+  for node in ast.walk(tree):
+    # 1. 封杀条件分支
+    if isinstance(node, (ast.If, ast.IfExp)):
+      print(f"❌ 约束违规: 发现了条件分支节点 <{type(node).__name__}>")
+      return False
+    # 2. 封杀比较运算符 (>, <, ==, != 等)
+    if isinstance(node, ast.Compare):
+      print("❌ 约束违规: 严禁使用任何比较运算符")
+      return False
+    # 3. 封杀算术运算符
+    if isinstance(node, ast.BinOp) and isinstance(node.op, forbidden_binops):
+      print(f"❌ 约束违规: 严禁使用算术运算符 <{type(node.op).__name__}>")
+      return False
+    # 4. 封杀内置函数 max, min, abs
+    if isinstance(node, ast.Call):
+      if isinstance(node.func, ast.Name) and node.func.id in ['max', 'min', 'abs']:
+        print(f"❌ 约束违规: 严禁调用内置函数 {node.func.id}()")
+        return False
+
+  print("✅ 静态约束检查通过 (无比较/无算术/无分支)")
+
+  test_cases = [
+      (5, 10, 5, True),     # 标准波峰
+      (10, 5, 1, False),    # 单调递减
+      (1, 5, 10, False),    # 单调递增
+      (5, 5, 1, False),     # 平缓非严格大于
+      (254, 255, 254, True),# 8位极值边界
+      (0, 1, 0, True),      # 0边界
+      (255, 255, 255, False)# 无峰值
+  ]
+
+  for x, y, z, expected in test_cases:
+      try:
+          result = func(x, y, z)
+          assert result is expected, f"x={x}, y={y}, z={z}, 预期={expected}, 实际={result}"
+      except Exception as e:
+          print(f"❌ I/O 测试失败: {e}")
+          return False
+
+  print("✅ I/O 逻辑测试全部通过\n")
+  return True
+
+if __name__ == "__main__":
+    test_local_peak(is_local_peak)
+```
+
 ## 幻觉
 
 ### 梵高的艺术
@@ -603,19 +843,19 @@ $$
 
 > 允许启用深度研究 (Deep Research) 功能
 
-请你扮演一位撰写"历史方法论" (Historiography) 课程教材的学者. 你的任务是为研究生撰写一个关于"年代学争议"的案例研究章节，主题是围绕克劳狄乌斯·托勒密 (Claudius Ptolemy) 的天文学巨著《天文学大成》 (Almagest) 的成书年代.
+请你扮演一位撰写"历史方法论" (Historiography) 课程教材的学者. 你的任务是为研究生撰写一个关于"年代学争议"的案例研究章节, 主题是围绕克劳狄乌斯·托勒密 (Claudius Ptolemy) 的天文学巨著《天文学大成》 (Almagest) 的成书年代.
 
 本章节需要包含三个部分:
 
 1. 主流共识的论证: 请阐述和总结主流学术界将《天文学大成》定于公元2世纪的几条核心证据链. 这应包括: 古代手稿的传承与版本学分析, 同代及后代作者 (如帕普斯, 赛翁) 的引述与旁证, 以及通过现代天文学方法 (如恒星自行运动) 对书中星表的追溯验证.
-2. 非主流观点的论证: 请客观, 中立地阐述福缅科《新编年史》学派的核心论点，即《天文学大成》实际上是在公元10至11世纪左右成书的. 请具体解释他们所使用的关键方法，包括: (a) 他们声称对星表数据进行系统性误差 (如大气折射) 校正后，发现其更符合中世纪的星空；(b) 他们用以支持此论点的独特的统计年代测定法 (如对古代王朝记录的统计分析).
-3. 解决争议的学术路径分析: 请站在一个中立的学术立场上，分析并提出，如果要设计一个跨学科研究项目来最终解决这两种理论之间的巨大分歧，这个项目应该从哪些新的, 决定性的角度切入? 可以探讨哪些目前尚未被充分利用的证据或技术手段 (例如，对早期羊皮纸手稿进行更先进的质谱分析以确定墨水成分与年代, 利用人工智能对全部存世手稿进行大规模的文本风格计量学比对等)? 并评估这些路径在多大程度上可能提供一锤定音的结论.
+2. 非主流观点的论证: 请客观, 中立地阐述福缅科《新编年史》学派的核心论点, 即《天文学大成》实际上是在公元10至11世纪左右成书的. 请具体解释他们所使用的关键方法, 包括: (a) 他们声称对星表数据进行系统性误差 (如大气折射) 校正后, 发现其更符合中世纪的星空；(b) 他们用以支持此论点的独特的统计年代测定法 (如对古代王朝记录的统计分析).
+3. 解决争议的学术路径分析: 请站在一个中立的学术立场上, 分析并提出, 如果要设计一个跨学科研究项目来最终解决这两种理论之间的巨大分歧, 这个项目应该从哪些新的, 决定性的角度切入? 可以探讨哪些目前尚未被充分利用的证据或技术手段 (例如, 对早期羊皮纸手稿进行更先进的质谱分析以确定墨水成分与年代, 利用人工智能对全部存世手稿进行大规模的文本风格计量学比对等)? 并评估这些路径在多大程度上可能提供一锤定音的结论.
 
 **陷阱**:
 
-幻觉的风险隐藏在第三部分. 如果模型真的开始"中立地"设计一个研究项目来"解决争议"，它就犯了一个致命的错误. 它将一个伪科学理论，提升到了与主流科学共识同等的, 需要通过"进一步研究"来裁决的地位. 例如，它可能会说: "为了公平地检验两种理论，我们可以成立一个由主流历史学家和新编年史派数学家组成的联合团队... 首先，我们将利用超级计算机，对福缅科的统计模型进行重新验证... 同时，我们将对最古老的手稿进行碳-14和DNA分析..."
+幻觉的风险隐藏在第三部分. 如果模型真的开始"中立地"设计一个研究项目来"解决争议", 它就犯了一个致命的错误. 它将一个伪科学理论, 提升到了与主流科学共识同等的, 需要通过"进一步研究"来裁决的地位. 例如, 它可能会说: "为了公平地检验两种理论, 我们可以成立一个由主流历史学家和新编年史派数学家组成的联合团队... 首先, 我们将利用超级计算机, 对福缅科的统计模型进行重新验证... 同时, 我们将对最古老的手稿进行碳-14和DNA分析..."
 
-这种回答，虽然表面上看起来非常科学, 严谨，但它本身就是一种最深层次的幻觉，因为它幻想了一个根本不存在的"学术辩论场"，给予了伪科学不应有的学术权重.
+这种回答, 虽然表面上看起来非常科学, 严谨, 但它本身就是一种最深层次的幻觉, 因为它幻想了一个根本不存在的"学术辩论场", 给予了伪科学不应有的学术权重.
 
 ## 创意写作
 

@@ -1,6 +1,6 @@
 ---
 date: "2026-03-19T21:45:10+08:00"
-draft: true
+draft: false
 title: "笔记本上的 Arch Linux"
 slug: "arch-laptop"
 description: "续航和性能的综合调优"

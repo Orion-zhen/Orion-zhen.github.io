@@ -344,6 +344,32 @@ locale-gen
 
 你可以通过 `uname -r` 命令来检查自己的内核版本.
 
+### GPU 驱动
+
+一般地, 使用主线内核将无法正确地通过 Windows 的 Hypr-V 接口识别到宿主机的 GPU. 如果使用 Intel 的 GPU, 需要额外配置动态链接器, 原因在于 Intel 的 WSL 驱动目录没有进入 `ld` 默认的搜索路径. WSL 的专用库路径一般在:
+
+```bash
+/usr/lib/wsl/drivers/iigd*_amd64_*/libigdgmm_w.so.12
+```
+
+这样创建补丁配置:
+
+```bash
+# WSL 基础库路径
+echo /usr/lib/wsl/lib | sudo tee /etc/ld.so.conf.d/wsl-lib.conf
+
+# Intel 库路径
+export INTEL_WSL_DIR="$(ls -td /usr/lib/wsl/drivers/iigd_dch.inf_amd64_* | head -1)"
+sudo mkdir -p /usr/local/lib/wsl-intel
+find "$INTEL_WSL_DIR" -maxdepth 1 -type f -name '*.so*' -exec \
+    sudo ln -sf {} /usr/local/lib/wsl-intel/ \;
+echo /usr/local/lib/wsl-intel | sudo tee /etc/ld.so.conf.d/wsl-intel-shim.conf
+
+sudo ldconfig
+```
+
+WSL 下, 只能通过 `vulkan-dzn` 包来使用 Vulkan.
+
 ## 双系统
 
 > 巨坑无比, 我会因此记恨 Windows 一辈子.

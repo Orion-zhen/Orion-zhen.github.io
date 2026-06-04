@@ -347,6 +347,21 @@ findmnt -t btrfs
 
 例如我的配置是: `/aio.lan/192.168.114.114`, 会将所有对 `*.aio.lan` 的域名解析到本地服务器, 以便 `nginx` 做反向代理.
 
+如果你十分不幸地, 需要通过 WiFi 接入服务器, 那么要小心检查 WiFi 省电模式是否开启. 如果开启的话, 服务器会在 WiFi 不活动一段时间后自动关闭 WiFi. 要关闭 WiFi 省电模式, 只需要在 `/etc/NetworkManager/conf.d/` 中新建 `wifi-powersave-off.conf` 文件:
+
+```ini
+[connection]
+wifi.powersave = 2
+```
+
+重启 NetworkManager 服务后, 通过:
+
+```bash
+iw dev wlan0 get power_save
+```
+
+验证省电模式状态.
+
 ## 应用服务
 
 我部署的所有服务的模板已在 [Orion-zhen/self-hosted](https://github.com/Orion-zhen/self-hosted) 开源. 下面简要介绍两个服务.

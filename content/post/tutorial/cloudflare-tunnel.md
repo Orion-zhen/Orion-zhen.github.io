@@ -72,3 +72,25 @@ sudo certbot certonly \
     ssl_certificate     /etc/letsencrypt/live/example.com/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
 ```
+
+如果以后不需要某个证书了, 也可以弃用, 或者更进一步地撤销.
+
+确认证书名称:
+
+```bash
+sudo certbot certificates
+```
+
+(可选)撤销证书:
+
+```bash
+sudo certbot revoke --cert-path /etc/letsencrypt/live/example.com/cert.pem
+```
+
+根据证书名称, 删除本地证书:
+
+```bash
+sudo certbot delete --cert-name "example.com"
+```
+
+这样 certbot 后续也不会自动续期和管理该证书了.

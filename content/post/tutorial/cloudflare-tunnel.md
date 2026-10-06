@@ -54,6 +54,7 @@ dns_cloudflare_api_token = 你的Cloudflare_API_Token
 sudo certbot certonly \
   --dns-cloudflare \
   --dns-cloudflare-credentials cloudflare.ini \
+  --no-eff-email \
   -d example.com \
   -d '*.example.com'
 ```
